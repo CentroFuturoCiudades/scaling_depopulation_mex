@@ -89,3 +89,13 @@ rule agg_mesh:
         mesh_gdf = gpd.read_parquet(input[0])
         met_xlsx_path = Path(input[1])
         agg_all_df = aggregate_mesh(mesh_gdf, met_xlsx_path, Path(OUT_DIR))
+
+rule table_agg_mesh_pretty:
+    input:
+        rules.agg_mesh.output
+    output:
+        "outputs/zones_agg_from_mesh.csv",
+        "outputs/zones_agg_from_mesh.tex",
+        "outputs/zones_centers.tex"
+    script:
+        "scripts/table_agg_data.py"
