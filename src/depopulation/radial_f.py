@@ -2,8 +2,12 @@
 
 from pathlib import Path
 
+import cmcrameri.cm as cmc
+import contextily as cx
 import numpy as np
 import pandas as pd
+from matplotlib_scalebar.scalebar import ScaleBar
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from shapely import Point
 
 from .utils import get_adj_idx
@@ -429,3 +433,133 @@ def gen_rem_brackets_pop(cve_list, rf_dir_path, opath):
         series_list.append(cve_series)
     rem_brackets_2 = pd.DataFrame(series_list).rename_axis(index="CVE_MET")
     rem_brackets_2.to_csv(opath / "remoteness_brackets_pop.csv")
+
+
+def agg_rem_brackets(brackets_path, opath):
+    """Aggregate national population counts at remoteness brackets.
+
+    Parameters
+    ----------
+    brackets_path : Path
+        Path to population counts per remoteness bracket for each zone.
+    opath : Path
+        Path to output directory.
+    """
+    rem_df = pd.read_csv(brackets_path, index_col=0, header=[0, 1])
+
+    agg_df = (
+        (rem_df.sum() / 1e6)
+        .reset_index()
+        .rename(columns={"level_0": "bracket", "level_1": "year", 0: "population"})
+        .assign(
+            p_fraction=lambda df: df.population
+            / df.groupby("year").population.transform("sum")
+        )
+    )
+    agg_df.to_csv(opath / "rem_brackets_agg.csv", index=False)
+
+
+def pop_change_map(mesh, agg, cve_met, ax, rem_vals=None, rmax=None, adjust_vmax=False):
+    """Generates a population change map, where cell values are population
+    difference between 2020 and 1990.
+
+    Parameters
+    ----------
+    mesh : GeoDataFrame
+        Multi-temporal population mesh.
+    agg : GeoDataFrame
+        Table of aggregated zone statistics with geometry centres.
+    cve_met : str
+        Code of the zone to plot.
+    ax : matplotlib.axes.Axes
+        Ax to place figure.
+    rem_vals : List, optional
+        Remoteness values where to draw circumferences at, by default None
+    rmax : float, optional
+        Values of rem above this are filtered, by default None
+    adjust_vmax : bool, optional
+        If true, adjust color range to predefined values, by default False
+    """
+    mesh_met = mesh.loc[cve_met, ["POB_URB", "geometry"]]
+    if rmax is not None:
+        mask = mesh.loc[cve_met, "DIST"] < rmax
+        mesh_met = mesh_met[mask]
+
+    mesh_met = mesh_met.unstack(level=0)
+    mesh_met.loc[:, ("POB_URB")] = mesh_met.loc[:, ("POB_URB")].fillna(0).values
+    mesh_met.loc[:, ("geometry")] = (
+        mesh_met.loc[:, ("geometry")].bfill(axis=1).ffill(axis=1).values
+    )
+    mesh_met = mesh_met.drop(
+        columns=[("geometry", 1990), ("geometry", 2000), ("geometry", 2010)]
+    )
+    mesh_met.columns = [f"{a}_{b}" for a, b in mesh_met.columns]
+    mesh_met = mesh_met.rename(columns={"geometry_2020": "geometry"}).set_geometry(
+        "geometry"
+    )
+    mesh_met = mesh_met.assign(
+        DIFF_POB_2020_1990=lambda df: df.POB_URB_2020 - df.POB_URB_1990
+    )
+
+    vmax = abs(mesh_met.DIFF_POB_2020_1990).max()
+    vmax_tick = vmax
+    if adjust_vmax:
+        if vmax < 4000:
+            vmax_tick = 2000
+            vmax = 2300
+        else:
+            vmax_tick = 4000
+            vmax = 4500
+
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("bottom", size="5%", pad=0)
+    # cax = ax.inset_axes([0.05, 0, 0.9, 0.05])
+
+    mesh_met.plot(
+        column="DIFF_POB_2020_1990",
+        ax=ax,
+        cax=cax,
+        # pylint: disable-next=E1101
+        cmap=cmc.vik.reversed(),
+        edgecolor="none",
+        lw=0.25,
+        legend=True,
+        legend_kwds={
+            # "label": "Population change between 1990 and 2020",
+            "orientation": "horizontal",
+        },
+        vmin=-vmax,
+        vmax=vmax,
+    )
+
+    cax.set_xticks([-vmax_tick, 0, vmax_tick])
+
+    center = agg.loc[[cve_met], ["geometry"]]
+    center.plot(ax=ax, color="black", markersize=10)
+
+    # chull = mesh_met.union_all().convex_hull
+    if rem_vals is not None:
+        for d in rem_vals:
+            # center.buffer(d).boundary.intersection(chull).to_frame().plot(
+            center.buffer(d * 1000).boundary.to_frame().plot(
+                ax=ax, facecolor="none", ls="--", edgecolor="black"
+            )
+
+    ax.set_axis_off()
+
+    x1, x2 = ax.get_xlim()
+    y1, y2 = ax.get_ylim()
+    xmid = (x1 + x2) / 2
+    ymid = (y1 + y2) / 2
+    delta = max(x2 - x1, y2 - y1)
+    ax.set_xlim(xmid - delta / 2, xmid + delta / 2)
+    ax.set_ylim(ymid - delta / 2, ymid + delta / 2)
+
+    cx.add_basemap(
+        ax,
+        crs=mesh_met.crs,
+        source=cx.providers.CartoDB.PositronNoLabels,
+        zoom_adjust=0,
+    )
+
+    ax.add_artist(ScaleBar(1))

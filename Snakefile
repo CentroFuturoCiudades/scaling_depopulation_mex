@@ -108,3 +108,12 @@ rule gen_rem_brackets_pop:
     run:
         from depopulation.radial_f import gen_rem_brackets_pop
         gen_rem_brackets_pop(CVES, Path(RFUNCS_DIR), Path(OUT_DIR))
+
+rule agg_rem_brackets:
+    input:
+        rules.gen_rem_brackets_pop.output
+    output:
+        f"{OUT_DIR}/rem_brackets_agg.csv"
+    run:
+        from depopulation.radial_f import agg_rem_brackets
+        agg_rem_brackets(Path(input[0]), Path(OUT_DIR))

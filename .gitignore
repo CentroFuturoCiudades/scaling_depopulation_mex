@@ -16,3 +16,4 @@ gurobi.log
 *.ipynb
 figures/*
 data/.ipynb_checkpoints/*
+.ipynb_checkpoints/*
