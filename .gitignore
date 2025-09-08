@@ -15,3 +15,4 @@ outputs
 gurobi.log
 *.ipynb
 figures/*
+data/.ipynb_checkpoints/*

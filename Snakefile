@@ -1,17 +1,11 @@
+import json
+from pathlib import Path
 
 # Codes of zones to process
-CVES = [
-    '01.1.01', '02.1.01', '02.2.02', '02.2.03', '03.2.01', '03.2.02', '04.2.01', 
-    '05.1.01', '05.1.02', '05.1.03', '05.1.04', '06.1.01', '07.1.01', '07.1.02',
-    '08.1.01', '08.1.02', '08.2.03', '09.1.01', '10.2.01', '11.1.01', '11.1.02',
-    '11.2.03', '11.2.04', '12.1.01', '12.2.02', '13.1.01', '13.1.02', '14.1.01',
-    '14.1.02', '15.1.01', '16.1.01', '16.1.02', '16.1.03', '16.2.04', '17.1.01',
-    '17.1.02', '18.1.01', '19.1.01', '20.1.01', '21.1.01', '21.1.02', '21.1.03',
-    '22.1.01', '23.1.01', '23.2.02', '24.1.01', '25.2.01', '25.2.02', '25.2.03',
-    '26.1.01', '26.2.02', '26.2.03', '26.2.04', '27.1.01', '28.1.01', '28.1.02',
-    '28.2.03', '28.2.04', '28.2.05', '29.1.01', '30.1.01', '30.1.02', '30.1.03',
-    '30.1.04', '30.1.05', '30.1.06', '30.1.07', '31.1.01', '32.1.01'
-]
+with open('data/cve_code_names.json', 'r') as f:
+        cve_dict = json.load(f)
+CVES  = list(cve_dict.keys())
+NAMES = list(cve_dict.values())
 
 OUT_DIR = "outputs"
 AGEBS_DIR_B = "data/AGEB_DATA_OUT/reprojected/base"
@@ -49,7 +43,6 @@ rule gen_mesh:
         f"{OUT_DIR}/mesh.geoparquet"
     run:
         from depopulation import build_mesh_gdf
-        from pathlib import Path
         met_xlsx_path = Path(input[0])
         cent_xlsx_path = Path(input[1])
         poly_path = Path(AGEBS_DIR_B)
@@ -71,7 +64,6 @@ rule gen_rfuncs:
         )
     run:
         from depopulation import build_radial_distributions
-        from pathlib import Path
         import geopandas as gpd
         mesh_gdf = gpd.read_parquet(input[0])
         build_radial_distributions(mesh_gdf, Path(RFUNCS_DIR))
@@ -84,7 +76,6 @@ rule agg_mesh:
         f"{OUT_DIR}/zones_agg_from_mesh.gpkg"
     run:
         from depopulation import aggregate_mesh
-        from pathlib import Path
         import geopandas as gpd
         mesh_gdf = gpd.read_parquet(input[0])
         met_xlsx_path = Path(input[1])
@@ -94,8 +85,26 @@ rule table_agg_mesh_pretty:
     input:
         rules.agg_mesh.output
     output:
-        "outputs/zones_agg_from_mesh.csv",
-        "outputs/zones_agg_from_mesh.tex",
-        "outputs/zones_centers.tex"
+        f"{OUT_DIR}/zones_agg_from_mesh.csv",
+        f"{OUT_DIR}/zones_agg_from_mesh.tex",
+        f"{OUT_DIR}/zones_centers.tex"
     script:
         "scripts/table_agg_data.py"
+
+rule gen_rem_brackets:
+    input:
+        rules.gen_rfuncs.output
+    output:
+        f"{OUT_DIR}/remoteness_brackets.csv"
+    run:
+        from depopulation.radial_f import get_remoteness_brackets
+        get_remoteness_brackets(CVES, NAMES, Path(RFUNCS_DIR), Path(OUT_DIR))
+
+rule gen_rem_brackets_pop:
+    input:
+        rules.gen_rfuncs.output
+    output:
+        f"{OUT_DIR}/remoteness_brackets_pop.csv"
+    run:
+        from depopulation.radial_f import gen_rem_brackets_pop
+        gen_rem_brackets_pop(CVES, Path(RFUNCS_DIR), Path(OUT_DIR))

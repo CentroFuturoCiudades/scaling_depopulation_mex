@@ -1,5 +1,8 @@
 """Code for building and loading radial functions."""
 
+from pathlib import Path
+
+import geopandas as gpd
 import numpy as np
 import pandas as pd
 from shapely import Point
@@ -291,3 +294,139 @@ def load_radial_f(cve_list, datadir, core=False):
         radial_f[cve] = cve_dict
 
     return radial_f
+
+
+def gen_pop_ar(cve_list, rf_dir_path):
+    """Generate array with population values.
+
+    Parameters
+    ----------
+    cve_list : List
+        List of zones (codes) for which to evaluate distances
+    rf_dir_path : Path
+        Path to radial distribution function data.
+
+    Returns
+    -------
+    np.Array
+        Array with population values of shape (# of zones, # of years)
+    """
+    years = (1990, 2000, 2010, 2020)
+    radial_f = load_radial_f(cve_list, Path(rf_dir_path), core=True)
+    pop_ar = np.array(
+        [[radial_f[cve][f"cumpop_{year}"][-1] for year in years] for cve in cve_list]
+    )
+    return pop_ar
+
+
+def get_remoteness_brackets(
+    cve_list, cve_names, rf_dir_path, opath, r_brackets=np.array([3, 5, 9.3])
+):
+    """Generates csv file with distances and remotenes values equivalance.
+    For each provided remoteness value, the equivalen distance in km is evaluated.
+    The csv file is indexed by zone codes with a column for each remoteness value.
+
+    Parameters
+    ----------
+    cve_list : List
+        List of zones (codes) for which to evaluate distances
+    cve_names : List
+        Names of zones corresponfing to codes in cve_list.
+    rf_dir_path : Path
+        Path to radial distribution function data.
+    opath : Path
+        Path of the output directory.
+    r_brackets : np.Array, optional
+        Array of remoteness brackets for which to find equivalen distances,
+        by default np.array([3, 5, 9.3]).
+    """
+    pop_ar = gen_pop_ar(cve_list, rf_dir_path)
+
+    dict_list = []
+    for i, cve in enumerate(cve_list):
+        dict_list.append(
+            {
+                "CVE_MET": cve,
+                "CVE_NAME": cve_names[i],
+                "brackets": r_brackets * np.sqrt(pop_ar[i, 3]) / 1000,
+            }
+        )
+    rem_brackets = (
+        pd.DataFrame(dict_list)
+        .pipe(
+            lambda df: pd.concat(
+                [
+                    df,
+                    df[["brackets"]].apply(
+                        lambda x: x.values[0], axis=1, result_type="expand"
+                    ),
+                ],
+                axis=1,
+            )
+        )
+        .drop(columns="brackets")
+        .rename(columns={0: "r_3", 1: "r_5", 2: "r_9.3"})
+        .set_index("CVE_MET")
+    )
+    rem_brackets.to_csv(opath / "remoteness_brackets.csv")
+
+
+def gen_rem_brackets_pop(cve_list, rf_dir_path, opath):
+    """Generates csv file with population within specified remotenes values.
+    The csv file is indexed by zone codes with a column for each remoteness value and
+    year combination.
+    Four remoteness brackets are considered:
+    - Inner: 0<r<3
+    - Mid: 3<r<5
+    - Distant: 5<r<9.3
+    - Outmost: r>9.3
+
+    Parameters
+    ----------
+    cve_list : List
+        List of zones (codes) for which to evaluate distances
+    rf_dir_path : Path
+        Path to radial distribution function data.
+    opath : Path
+        Path of the output directory.
+    """
+    years = (1990, 2000, 2010, 2020)
+    pop_ar = gen_pop_ar(cve_list, rf_dir_path)
+    radial_f = load_radial_f(cve_list, Path(rf_dir_path), core=True)
+    series_list = []
+    for i, cve in enumerate(cve_list):
+        r_ring = radial_f[cve]["r_ring"]
+
+        pop = {y: radial_f[cve][f"ring_pop_{y}"] for y in years}
+
+        # Scaling factos
+        factor = {y: np.sqrt(pop_ar[i, j]) for j, y in enumerate(years)}
+
+        # Scaled distances
+        r_ring_s = {y: r_ring / factor[y] for y in years}
+
+        pop_inner = {y: pop[y][r_ring_s[2020] < 3].sum() for y in years}
+        pop_mid = {
+            y: pop[y][np.logical_and(r_ring_s[2020] >= 3, r_ring_s[2020] < 5)].sum()
+            for y in years
+        }
+        pop_distant = {
+            y: pop[y][np.logical_and(r_ring_s[2020] >= 5, r_ring_s[2020] < 9.3)].sum()
+            for y in years
+        }
+        pop_outmost = {y: pop[y][r_ring_s[2020] >= 9.3].sum() for y in years}
+        cve_series = (
+            pd.DataFrame(
+                {
+                    "N_inner": pop_inner,
+                    "N_mid": pop_mid,
+                    "N_distant": pop_distant,
+                    "N_outmost": pop_outmost,
+                }
+            )
+            .T.stack()
+            .rename(cve)
+        )
+        series_list.append(cve_series)
+    rem_brackets_2 = pd.DataFrame(series_list).rename_axis(index="CVE_MET")
+    rem_brackets_2.to_csv(opath / "remoteness_brackets_pop.csv")
