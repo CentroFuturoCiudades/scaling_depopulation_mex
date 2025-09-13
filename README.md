@@ -7,5 +7,5 @@ Once the enviroment is available, the following `snakemake` commands can be used
 uv run snakemake gen_rfuncs --cores 1
 ```
 
-This generates the output files `mesh.geoparquet` (the multi-temporal population grid), and the radial density functions as csv files in `outputs/rafial_f/`.
+This generates the output files `mesh.geoparquet` (the multi-temporal population grid), and the radial density functions as csv files in `outputs/rafial_f/`. Expected run time is less than an hour in a MacBook Pro M1.
 
