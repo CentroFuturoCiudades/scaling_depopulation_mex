@@ -1,0 +1,288 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" baseProfile="tiny" width="285.75mm" viewBox="0 0 1080 1080" height="285.75mm" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+ <defs/>
+ <g stroke-linejoin="bevel" inkscape:label="Page" stroke-width="1" stroke-linecap="square" fill-rule="evenodd" id="Page" fill="none" inkscape:groupmode="layer" stroke="black">
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(3.77953,0,0,3.77953,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+  <g font-weight="400" font-family=".AppleSystemUIFont" font-size="17.3333" fill="#ffffff" transform="matrix(1,0,0,1,0,0)" fill-opacity="1" font-style="normal" stroke="none">
+   <path vector-effect="none" fill-rule="evenodd" d="M-2,-2 L1082,-2 L1082,1082 L-2,1082 L-2,-2"/>
+  </g>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(3.77953,0,0,3.77953,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(3.77953,0,0,3.77953,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+ </g>
+ <defs>
+  <linearGradient y2="1" x1="0.5" id="gradient1" y1="0" x2="0.5" gradientUnits="objectBoundingBox">
+   <stop stop-color="#590008" stop-opacity="1" offset="0"/>
+   <stop stop-color="#5b0108" stop-opacity="1" offset="0.00392"/>
+   <stop stop-color="#5d0208" stop-opacity="1" offset="0.00784"/>
+   <stop stop-color="#5e0308" stop-opacity="1" offset="0.01176"/>
+   <stop stop-color="#600408" stop-opacity="1" offset="0.01569"/>
+   <stop stop-color="#620607" stop-opacity="1" offset="0.01961"/>
+   <stop stop-color="#630707" stop-opacity="1" offset="0.02353"/>
+   <stop stop-color="#650907" stop-opacity="1" offset="0.02745"/>
+   <stop stop-color="#670a07" stop-opacity="1" offset="0.03137"/>
+   <stop stop-color="#680c07" stop-opacity="1" offset="0.03529"/>
+   <stop stop-color="#6a0d07" stop-opacity="1" offset="0.03922"/>
+   <stop stop-color="#6c0e07" stop-opacity="1" offset="0.04314"/>
+   <stop stop-color="#6d1007" stop-opacity="1" offset="0.04706"/>
+   <stop stop-color="#6f1107" stop-opacity="1" offset="0.05098"/>
+   <stop stop-color="#711307" stop-opacity="1" offset="0.0549"/>
+   <stop stop-color="#731406" stop-opacity="1" offset="0.05882"/>
+   <stop stop-color="#741506" stop-opacity="1" offset="0.06275"/>
+   <stop stop-color="#761706" stop-opacity="1" offset="0.06667"/>
+   <stop stop-color="#781806" stop-opacity="1" offset="0.07059"/>
+   <stop stop-color="#7a1a06" stop-opacity="1" offset="0.07451"/>
+   <stop stop-color="#7c1b06" stop-opacity="1" offset="0.07843"/>
+   <stop stop-color="#7e1d06" stop-opacity="1" offset="0.08235"/>
+   <stop stop-color="#7f1e06" stop-opacity="1" offset="0.08627"/>
+   <stop stop-color="#811f06" stop-opacity="1" offset="0.0902"/>
+   <stop stop-color="#832106" stop-opacity="1" offset="0.09412"/>
+   <stop stop-color="#852206" stop-opacity="1" offset="0.09804"/>
+   <stop stop-color="#872406" stop-opacity="1" offset="0.10196"/>
+   <stop stop-color="#892606" stop-opacity="1" offset="0.10588"/>
+   <stop stop-color="#8b2706" stop-opacity="1" offset="0.1098"/>
+   <stop stop-color="#8d2906" stop-opacity="1" offset="0.11373"/>
+   <stop stop-color="#8f2b06" stop-opacity="1" offset="0.11765"/>
+   <stop stop-color="#912d06" stop-opacity="1" offset="0.12157"/>
+   <stop stop-color="#942f06" stop-opacity="1" offset="0.12549"/>
+   <stop stop-color="#963107" stop-opacity="1" offset="0.12941"/>
+   <stop stop-color="#983307" stop-opacity="1" offset="0.13333"/>
+   <stop stop-color="#9a3508" stop-opacity="1" offset="0.13725"/>
+   <stop stop-color="#9c3709" stop-opacity="1" offset="0.14118"/>
+   <stop stop-color="#9f390a" stop-opacity="1" offset="0.1451"/>
+   <stop stop-color="#a13c0b" stop-opacity="1" offset="0.14902"/>
+   <stop stop-color="#a33e0d" stop-opacity="1" offset="0.15294"/>
+   <stop stop-color="#a5400f" stop-opacity="1" offset="0.15686"/>
+   <stop stop-color="#a74310" stop-opacity="1" offset="0.16078"/>
+   <stop stop-color="#a94512" stop-opacity="1" offset="0.16471"/>
+   <stop stop-color="#ab4814" stop-opacity="1" offset="0.16863"/>
+   <stop stop-color="#ad4a16" stop-opacity="1" offset="0.17255"/>
+   <stop stop-color="#af4c18" stop-opacity="1" offset="0.17647"/>
+   <stop stop-color="#b04f1b" stop-opacity="1" offset="0.18039"/>
+   <stop stop-color="#b2511d" stop-opacity="1" offset="0.18431"/>
+   <stop stop-color="#b3531f" stop-opacity="1" offset="0.18824"/>
+   <stop stop-color="#b55521" stop-opacity="1" offset="0.19216"/>
+   <stop stop-color="#b65824" stop-opacity="1" offset="0.19608"/>
+   <stop stop-color="#b75a26" stop-opacity="1" offset="0.2"/>
+   <stop stop-color="#b85c28" stop-opacity="1" offset="0.20392"/>
+   <stop stop-color="#ba5e2a" stop-opacity="1" offset="0.20784"/>
+   <stop stop-color="#bb602d" stop-opacity="1" offset="0.21176"/>
+   <stop stop-color="#bc622f" stop-opacity="1" offset="0.21569"/>
+   <stop stop-color="#bd6431" stop-opacity="1" offset="0.21961"/>
+   <stop stop-color="#be6533" stop-opacity="1" offset="0.22353"/>
+   <stop stop-color="#be6736" stop-opacity="1" offset="0.22745"/>
+   <stop stop-color="#bf6938" stop-opacity="1" offset="0.23137"/>
+   <stop stop-color="#c06b3a" stop-opacity="1" offset="0.23529"/>
+   <stop stop-color="#c16d3c" stop-opacity="1" offset="0.23922"/>
+   <stop stop-color="#c26e3f" stop-opacity="1" offset="0.24314"/>
+   <stop stop-color="#c27041" stop-opacity="1" offset="0.24706"/>
+   <stop stop-color="#c37243" stop-opacity="1" offset="0.25098"/>
+   <stop stop-color="#c47445" stop-opacity="1" offset="0.2549"/>
+   <stop stop-color="#c57548" stop-opacity="1" offset="0.25882"/>
+   <stop stop-color="#c6774a" stop-opacity="1" offset="0.26275"/>
+   <stop stop-color="#c6794c" stop-opacity="1" offset="0.26667"/>
+   <stop stop-color="#c77b4f" stop-opacity="1" offset="0.27059"/>
+   <stop stop-color="#c87c51" stop-opacity="1" offset="0.27451"/>
+   <stop stop-color="#c97e53" stop-opacity="1" offset="0.27843"/>
+   <stop stop-color="#c98056" stop-opacity="1" offset="0.28235"/>
+   <stop stop-color="#ca8258" stop-opacity="1" offset="0.28627"/>
+   <stop stop-color="#cb835a" stop-opacity="1" offset="0.2902"/>
+   <stop stop-color="#cc855d" stop-opacity="1" offset="0.29412"/>
+   <stop stop-color="#cc875f" stop-opacity="1" offset="0.29804"/>
+   <stop stop-color="#cd8961" stop-opacity="1" offset="0.30196"/>
+   <stop stop-color="#ce8b64" stop-opacity="1" offset="0.30588"/>
+   <stop stop-color="#cf8c66" stop-opacity="1" offset="0.3098"/>
+   <stop stop-color="#cf8e68" stop-opacity="1" offset="0.31373"/>
+   <stop stop-color="#d0906b" stop-opacity="1" offset="0.31765"/>
+   <stop stop-color="#d1926d" stop-opacity="1" offset="0.32157"/>
+   <stop stop-color="#d29470" stop-opacity="1" offset="0.32549"/>
+   <stop stop-color="#d39572" stop-opacity="1" offset="0.32941"/>
+   <stop stop-color="#d39774" stop-opacity="1" offset="0.33333"/>
+   <stop stop-color="#d49977" stop-opacity="1" offset="0.33725"/>
+   <stop stop-color="#d59b79" stop-opacity="1" offset="0.34118"/>
+   <stop stop-color="#d69d7c" stop-opacity="1" offset="0.3451"/>
+   <stop stop-color="#d69f7e" stop-opacity="1" offset="0.34902"/>
+   <stop stop-color="#d7a081" stop-opacity="1" offset="0.35294"/>
+   <stop stop-color="#d8a283" stop-opacity="1" offset="0.35686"/>
+   <stop stop-color="#d9a486" stop-opacity="1" offset="0.36078"/>
+   <stop stop-color="#daa688" stop-opacity="1" offset="0.36471"/>
+   <stop stop-color="#dba88b" stop-opacity="1" offset="0.36863"/>
+   <stop stop-color="#dbaa8d" stop-opacity="1" offset="0.37255"/>
+   <stop stop-color="#dcac90" stop-opacity="1" offset="0.37647"/>
+   <stop stop-color="#ddae93" stop-opacity="1" offset="0.38039"/>
+   <stop stop-color="#deb095" stop-opacity="1" offset="0.38431"/>
+   <stop stop-color="#dfb298" stop-opacity="1" offset="0.38824"/>
+   <stop stop-color="#dfb49a" stop-opacity="1" offset="0.39216"/>
+   <stop stop-color="#e0b69d" stop-opacity="1" offset="0.39608"/>
+   <stop stop-color="#e1b8a0" stop-opacity="1" offset="0.4"/>
+   <stop stop-color="#e2baa2" stop-opacity="1" offset="0.40392"/>
+   <stop stop-color="#e3bca5" stop-opacity="1" offset="0.40784"/>
+   <stop stop-color="#e4bea8" stop-opacity="1" offset="0.41176"/>
+   <stop stop-color="#e4bfaa" stop-opacity="1" offset="0.41569"/>
+   <stop stop-color="#e5c1ad" stop-opacity="1" offset="0.41961"/>
+   <stop stop-color="#e6c4b0" stop-opacity="1" offset="0.42353"/>
+   <stop stop-color="#e7c6b2" stop-opacity="1" offset="0.42745"/>
+   <stop stop-color="#e8c8b5" stop-opacity="1" offset="0.43137"/>
+   <stop stop-color="#e9cab8" stop-opacity="1" offset="0.43529"/>
+   <stop stop-color="#e9ccba" stop-opacity="1" offset="0.43922"/>
+   <stop stop-color="#eacebd" stop-opacity="1" offset="0.44314"/>
+   <stop stop-color="#ebd0c0" stop-opacity="1" offset="0.44706"/>
+   <stop stop-color="#ecd1c3" stop-opacity="1" offset="0.45098"/>
+   <stop stop-color="#ecd3c5" stop-opacity="1" offset="0.4549"/>
+   <stop stop-color="#edd5c8" stop-opacity="1" offset="0.45882"/>
+   <stop stop-color="#edd7cb" stop-opacity="1" offset="0.46275"/>
+   <stop stop-color="#eed9cd" stop-opacity="1" offset="0.46667"/>
+   <stop stop-color="#eedbd0" stop-opacity="1" offset="0.47059"/>
+   <stop stop-color="#eeddd3" stop-opacity="1" offset="0.47451"/>
+   <stop stop-color="#eeded5" stop-opacity="1" offset="0.47843"/>
+   <stop stop-color="#eee0d8" stop-opacity="1" offset="0.48235"/>
+   <stop stop-color="#eee1da" stop-opacity="1" offset="0.48627"/>
+   <stop stop-color="#eee3dc" stop-opacity="1" offset="0.4902"/>
+   <stop stop-color="#ede4de" stop-opacity="1" offset="0.49412"/>
+   <stop stop-color="#ece5e0" stop-opacity="1" offset="0.49804"/>
+   <stop stop-color="#ebe6e2" stop-opacity="1" offset="0.50196"/>
+   <stop stop-color="#eae6e4" stop-opacity="1" offset="0.50588"/>
+   <stop stop-color="#e8e7e5" stop-opacity="1" offset="0.5098"/>
+   <stop stop-color="#e7e7e7" stop-opacity="1" offset="0.51373"/>
+   <stop stop-color="#e5e7e8" stop-opacity="1" offset="0.51765"/>
+   <stop stop-color="#e2e7e8" stop-opacity="1" offset="0.52157"/>
+   <stop stop-color="#e0e6e9" stop-opacity="1" offset="0.52549"/>
+   <stop stop-color="#dee6e9" stop-opacity="1" offset="0.52941"/>
+   <stop stop-color="#dbe5e9" stop-opacity="1" offset="0.53333"/>
+   <stop stop-color="#d8e4e9" stop-opacity="1" offset="0.53725"/>
+   <stop stop-color="#d5e3e9" stop-opacity="1" offset="0.54118"/>
+   <stop stop-color="#d2e1e9" stop-opacity="1" offset="0.5451"/>
+   <stop stop-color="#cfe0e8" stop-opacity="1" offset="0.54902"/>
+   <stop stop-color="#ccdfe8" stop-opacity="1" offset="0.55294"/>
+   <stop stop-color="#c9dde7" stop-opacity="1" offset="0.55686"/>
+   <stop stop-color="#c6dbe6" stop-opacity="1" offset="0.56078"/>
+   <stop stop-color="#c3dae5" stop-opacity="1" offset="0.56471"/>
+   <stop stop-color="#c0d8e4" stop-opacity="1" offset="0.56863"/>
+   <stop stop-color="#bdd6e3" stop-opacity="1" offset="0.57255"/>
+   <stop stop-color="#bad5e2" stop-opacity="1" offset="0.57647"/>
+   <stop stop-color="#b6d3e1" stop-opacity="1" offset="0.58039"/>
+   <stop stop-color="#b3d1df" stop-opacity="1" offset="0.58431"/>
+   <stop stop-color="#b0cfde" stop-opacity="1" offset="0.58824"/>
+   <stop stop-color="#adcddd" stop-opacity="1" offset="0.59216"/>
+   <stop stop-color="#aacbdc" stop-opacity="1" offset="0.59608"/>
+   <stop stop-color="#a7c9da" stop-opacity="1" offset="0.6"/>
+   <stop stop-color="#a3c7d9" stop-opacity="1" offset="0.60392"/>
+   <stop stop-color="#a0c5d8" stop-opacity="1" offset="0.60784"/>
+   <stop stop-color="#9dc4d6" stop-opacity="1" offset="0.61176"/>
+   <stop stop-color="#9ac2d5" stop-opacity="1" offset="0.61569"/>
+   <stop stop-color="#97c0d4" stop-opacity="1" offset="0.61961"/>
+   <stop stop-color="#94bed2" stop-opacity="1" offset="0.62353"/>
+   <stop stop-color="#90bcd1" stop-opacity="1" offset="0.62745"/>
+   <stop stop-color="#8dbad0" stop-opacity="1" offset="0.63137"/>
+   <stop stop-color="#8ab8ce" stop-opacity="1" offset="0.63529"/>
+   <stop stop-color="#87b6cd" stop-opacity="1" offset="0.63922"/>
+   <stop stop-color="#84b4cc" stop-opacity="1" offset="0.64314"/>
+   <stop stop-color="#80b2ca" stop-opacity="1" offset="0.64706"/>
+   <stop stop-color="#7db0c9" stop-opacity="1" offset="0.65098"/>
+   <stop stop-color="#7aaec8" stop-opacity="1" offset="0.6549"/>
+   <stop stop-color="#77acc6" stop-opacity="1" offset="0.65882"/>
+   <stop stop-color="#74aac5" stop-opacity="1" offset="0.66275"/>
+   <stop stop-color="#71a8c4" stop-opacity="1" offset="0.66667"/>
+   <stop stop-color="#6da6c2" stop-opacity="1" offset="0.67059"/>
+   <stop stop-color="#6aa4c1" stop-opacity="1" offset="0.67451"/>
+   <stop stop-color="#67a2c0" stop-opacity="1" offset="0.67843"/>
+   <stop stop-color="#64a0be" stop-opacity="1" offset="0.68235"/>
+   <stop stop-color="#619ebd" stop-opacity="1" offset="0.68627"/>
+   <stop stop-color="#5d9cbb" stop-opacity="1" offset="0.6902"/>
+   <stop stop-color="#5a9aba" stop-opacity="1" offset="0.69412"/>
+   <stop stop-color="#5798b9" stop-opacity="1" offset="0.69804"/>
+   <stop stop-color="#5496b7" stop-opacity="1" offset="0.70196"/>
+   <stop stop-color="#5194b6" stop-opacity="1" offset="0.70588"/>
+   <stop stop-color="#4e92b4" stop-opacity="1" offset="0.7098"/>
+   <stop stop-color="#4b90b3" stop-opacity="1" offset="0.71373"/>
+   <stop stop-color="#488db2" stop-opacity="1" offset="0.71765"/>
+   <stop stop-color="#458bb0" stop-opacity="1" offset="0.72157"/>
+   <stop stop-color="#4289af" stop-opacity="1" offset="0.72549"/>
+   <stop stop-color="#3f87ad" stop-opacity="1" offset="0.72941"/>
+   <stop stop-color="#3c85ac" stop-opacity="1" offset="0.73333"/>
+   <stop stop-color="#3983ab" stop-opacity="1" offset="0.73725"/>
+   <stop stop-color="#3681a9" stop-opacity="1" offset="0.74118"/>
+   <stop stop-color="#337fa8" stop-opacity="1" offset="0.7451"/>
+   <stop stop-color="#307da6" stop-opacity="1" offset="0.74902"/>
+   <stop stop-color="#2d7ba5" stop-opacity="1" offset="0.75294"/>
+   <stop stop-color="#2b79a4" stop-opacity="1" offset="0.75686"/>
+   <stop stop-color="#2877a2" stop-opacity="1" offset="0.76078"/>
+   <stop stop-color="#2575a1" stop-opacity="1" offset="0.76471"/>
+   <stop stop-color="#2373a0" stop-opacity="1" offset="0.76863"/>
+   <stop stop-color="#20719e" stop-opacity="1" offset="0.77255"/>
+   <stop stop-color="#1e6f9d" stop-opacity="1" offset="0.77647"/>
+   <stop stop-color="#1c6d9c" stop-opacity="1" offset="0.78039"/>
+   <stop stop-color="#196b9a" stop-opacity="1" offset="0.78431"/>
+   <stop stop-color="#176999" stop-opacity="1" offset="0.78824"/>
+   <stop stop-color="#156798" stop-opacity="1" offset="0.79216"/>
+   <stop stop-color="#136697" stop-opacity="1" offset="0.79608"/>
+   <stop stop-color="#116496" stop-opacity="1" offset="0.8"/>
+   <stop stop-color="#106294" stop-opacity="1" offset="0.80392"/>
+   <stop stop-color="#0e6093" stop-opacity="1" offset="0.80784"/>
+   <stop stop-color="#0c5e92" stop-opacity="1" offset="0.81176"/>
+   <stop stop-color="#0b5d91" stop-opacity="1" offset="0.81569"/>
+   <stop stop-color="#095b90" stop-opacity="1" offset="0.81961"/>
+   <stop stop-color="#08598f" stop-opacity="1" offset="0.82353"/>
+   <stop stop-color="#07578d" stop-opacity="1" offset="0.82745"/>
+   <stop stop-color="#06568c" stop-opacity="1" offset="0.83137"/>
+   <stop stop-color="#06548b" stop-opacity="1" offset="0.83529"/>
+   <stop stop-color="#05528a" stop-opacity="1" offset="0.83922"/>
+   <stop stop-color="#055189" stop-opacity="1" offset="0.84314"/>
+   <stop stop-color="#044f88" stop-opacity="1" offset="0.84706"/>
+   <stop stop-color="#044d87" stop-opacity="1" offset="0.85098"/>
+   <stop stop-color="#044c86" stop-opacity="1" offset="0.8549"/>
+   <stop stop-color="#034a85" stop-opacity="1" offset="0.85882"/>
+   <stop stop-color="#034984" stop-opacity="1" offset="0.86275"/>
+   <stop stop-color="#034783" stop-opacity="1" offset="0.86667"/>
+   <stop stop-color="#034582" stop-opacity="1" offset="0.87059"/>
+   <stop stop-color="#034481" stop-opacity="1" offset="0.87451"/>
+   <stop stop-color="#034280" stop-opacity="1" offset="0.87843"/>
+   <stop stop-color="#03417f" stop-opacity="1" offset="0.88235"/>
+   <stop stop-color="#033f7e" stop-opacity="1" offset="0.88627"/>
+   <stop stop-color="#033e7d" stop-opacity="1" offset="0.8902"/>
+   <stop stop-color="#033c7c" stop-opacity="1" offset="0.89412"/>
+   <stop stop-color="#023a7b" stop-opacity="1" offset="0.89804"/>
+   <stop stop-color="#02397a" stop-opacity="1" offset="0.901961"/>
+   <stop stop-color="#023779" stop-opacity="1" offset="0.905882"/>
+   <stop stop-color="#023678" stop-opacity="1" offset="0.909804"/>
+   <stop stop-color="#023477" stop-opacity="1" offset="0.913725"/>
+   <stop stop-color="#023376" stop-opacity="1" offset="0.917647"/>
+   <stop stop-color="#023175" stop-opacity="1" offset="0.921569"/>
+   <stop stop-color="#023074" stop-opacity="1" offset="0.92549"/>
+   <stop stop-color="#022e73" stop-opacity="1" offset="0.929412"/>
+   <stop stop-color="#022d72" stop-opacity="1" offset="0.933333"/>
+   <stop stop-color="#022b71" stop-opacity="1" offset="0.937255"/>
+   <stop stop-color="#022a70" stop-opacity="1" offset="0.941176"/>
+   <stop stop-color="#02286f" stop-opacity="1" offset="0.945098"/>
+   <stop stop-color="#02276e" stop-opacity="1" offset="0.94902"/>
+   <stop stop-color="#02256d" stop-opacity="1" offset="0.952941"/>
+   <stop stop-color="#02236c" stop-opacity="1" offset="0.956863"/>
+   <stop stop-color="#02226b" stop-opacity="1" offset="0.960784"/>
+   <stop stop-color="#02206a" stop-opacity="1" offset="0.964706"/>
+   <stop stop-color="#021f69" stop-opacity="1" offset="0.968627"/>
+   <stop stop-color="#021d68" stop-opacity="1" offset="0.972549"/>
+   <stop stop-color="#021c67" stop-opacity="1" offset="0.976471"/>
+   <stop stop-color="#011a66" stop-opacity="1" offset="0.980392"/>
+   <stop stop-color="#011865" stop-opacity="1" offset="0.984314"/>
+   <stop stop-color="#011764" stop-opacity="1" offset="0.988235"/>
+   <stop stop-color="#011563" stop-opacity="1" offset="0.992157"/>
+   <stop stop-color="#011462" stop-opacity="1" offset="0.996078"/>
+   <stop stop-color="#001261" stop-opacity="1" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g stroke-linejoin="bevel" inkscape:label="Rectangle" stroke-width="1" stroke-linecap="square" fill-rule="evenodd" id="Rectangle" fill="none" inkscape:groupmode="layer" stroke="black">
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(0,-3.77953,3.77953,0,18.5745,1052.64)" font-style="normal" stroke="#000000"/>
+  <g font-weight="400" font-family=".AppleSystemUIFont" font-size="17.3333" fill="url(#gradient1)" transform="matrix(0,-1,1,0,18.5745,1052.64)" font-style="normal" stroke="none">
+   <path vector-effect="none" fill-rule="evenodd" d="M0,0 L40.492,0 L40.492,1055.65 L0,1055.65 L0,0"/>
+  </g>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(0,-3.77953,3.77953,0,18.5745,1052.64)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(0,-3.77953,3.77953,0,18.5745,1052.64)" font-style="normal" stroke="#000000"/>
+  <g stroke-opacity="1" font-weight="400" stroke-linejoin="bevel" stroke-width="1" stroke-linecap="square" font-family=".AppleSystemUIFont" font-size="17.3333" fill="none" transform="matrix(1,0,0,1,0,0)" font-style="normal" stroke="#000000"/>
+ </g>
+</svg>
