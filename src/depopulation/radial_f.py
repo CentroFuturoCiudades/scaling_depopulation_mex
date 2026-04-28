@@ -323,7 +323,10 @@ def gen_pop_ar(cve_list, rf_dir_path):
 
 
 def get_remoteness_brackets(
-    cve_list, cve_names, rf_dir_path, opath, r_brackets=np.array([3, 5, 9.3])
+    cve_list,
+    cve_names,
+    rf_dir_path,
+    opath,
 ):
     """Generates csv file with distances and remotenes values equivalance.
     For each provided remoteness value, the equivalen distance in km is evaluated.
@@ -339,10 +342,8 @@ def get_remoteness_brackets(
         Path to radial distribution function data.
     opath : Path
         Path of the output directory.
-    r_brackets : np.Array, optional
-        Array of remoteness brackets for which to find equivalen distances,
-        by default np.array([3, 5, 9.3]).
     """
+    r_brackets = np.array([3, 5, 9.3])
     pop_ar = gen_pop_ar(cve_list, rf_dir_path)
 
     dict_list = []
@@ -371,6 +372,12 @@ def get_remoteness_brackets(
         .rename(columns={0: "r_3", 1: "r_5", 2: "r_9.3"})
         .set_index("CVE_MET")
     )
+
+    # To get rmax we need the radial density functions
+    radial_f = load_radial_f(cve_list, Path(rf_dir_path), core=True)
+    for cve in cve_list:
+        rem_brackets["rmax"] = [radial_f[cve]["r_disk"][-1] / 1000 for cve in cve_list]
+
     rem_brackets.to_csv(opath / "remoteness_brackets.csv")
 
 
@@ -435,6 +442,68 @@ def gen_rem_brackets_pop(cve_list, rf_dir_path, opath):
     rem_brackets_2.to_csv(opath / "remoteness_brackets_pop.csv")
 
 
+def gen_rem_brackets_pop_any_beta(cve_list, rf_dir_path, opath, beta=0.5):
+    """Generates csv file with population within specified remotenes values.
+    The csv file is indexed by zone codes with a column for each remoteness value and
+    year combination.
+    Four remoteness brackets are considered:
+    - Inner: 0<r<3
+    - Mid: 3<r<5
+    - Distant: 5<r<9.3
+    - Outmost: r>9.3
+
+    Parameters
+    ----------
+    cve_list : List
+        List of zones (codes) for which to evaluate distances
+    rf_dir_path : Path
+        Path to radial distribution function data.
+    opath : Path
+        Path of the output directory.
+    """
+    years = (1990, 2000, 2010, 2020)
+    pop_ar = gen_pop_ar(cve_list, rf_dir_path)
+    radial_f = load_radial_f(cve_list, Path(rf_dir_path), core=True)
+    series_list = []
+    for i, cve in enumerate(cve_list):
+        # Get distance in km
+        r_ring = radial_f[cve]["r_ring"] / 1e3
+
+        pop = {y: radial_f[cve][f"ring_pop_{y}"] for y in years}
+
+        # Scaling factos
+        factor = {y: (pop_ar[i, j] / 1e6) ** beta for j, y in enumerate(years)}
+
+        # Scaled distances
+        r_ring_s = {y: r_ring / factor[y] for y in years}
+
+        pop_inner = {y: pop[y][r_ring_s[2020] < 3].sum() for y in years}
+        pop_mid = {
+            y: pop[y][np.logical_and(r_ring_s[2020] >= 3, r_ring_s[2020] < 5)].sum()
+            for y in years
+        }
+        pop_distant = {
+            y: pop[y][np.logical_and(r_ring_s[2020] >= 5, r_ring_s[2020] < 9.3)].sum()
+            for y in years
+        }
+        pop_outmost = {y: pop[y][r_ring_s[2020] >= 9.3].sum() for y in years}
+        cve_series = (
+            pd.DataFrame(
+                {
+                    "N_inner": pop_inner,
+                    "N_mid": pop_mid,
+                    "N_distant": pop_distant,
+                    "N_outmost": pop_outmost,
+                }
+            )
+            .T.stack()
+            .rename(cve)
+        )
+        series_list.append(cve_series)
+    rem_brackets_2 = pd.DataFrame(series_list).rename_axis(index="CVE_MET")
+    rem_brackets_2.to_csv(opath / f"remoteness_brackets_pop_beta_{beta:0.2f}.csv")
+
+
 def agg_rem_brackets(brackets_path, opath):
     """Aggregate national population counts at remoteness brackets.
 
@@ -452,11 +521,104 @@ def agg_rem_brackets(brackets_path, opath):
         .reset_index()
         .rename(columns={"level_0": "bracket", "level_1": "year", 0: "population"})
         .assign(
-            p_fraction=lambda df: df.population
-            / df.groupby("year").population.transform("sum")
+            p_fraction=lambda df: (
+                df.population / df.groupby("year").population.transform("sum")
+            )
         )
     )
-    agg_df.to_csv(opath / "rem_brackets_agg.csv", index=False)
+
+    # agg_df.to_csv(opath / "rem_brackets_agg.csv", index=False)
+    return agg_df
+
+    # beta = 0.5
+    # series_list = []
+    # for i, cve in enumerate(cve_list):
+    #     r_ring = radial_f_core[cve]["r_ring"]
+
+    #     pop = {y: radial_f_core[cve][f"ring_pop_{y}"] for y in years}
+
+    #     # Scaling factos
+    #     factor = {y: N_c[i, j] ** beta for j, y in enumerate(years)}
+
+    #     # Scaled distances
+    #     r_ring_s = {y: r_ring / factor[y] for y in years}
+
+    #     pop_inner = {y: pop[y][r_ring_s[2020] < 3].sum() for y in years}
+    #     pop_mid = {
+    #         y: pop[y][np.logical_and(r_ring_s[2020] >= 3, r_ring_s[2020] < 5)].sum()
+    #         for y in years
+    #     }
+    #     pop_distant = {
+    #         y: pop[y][np.logical_and(r_ring_s[2020] >= 5, r_ring_s[2020] < 9.3)].sum()
+    #         for y in years
+    #     }
+    #     pop_outmost = {y: pop[y][r_ring_s[2020] >= 9.3].sum() for y in years}
+    #     cve_series = (
+    #         pd.DataFrame(
+    #             {
+    #                 "N_inner": pop_inner,
+    #                 "N_mid": pop_mid,
+    #                 "N_distant": pop_distant,
+    #                 "N_outmost": pop_outmost,
+    #             }
+    #         )
+    #         .T.stack()
+    #         .rename(cve)
+    #     )
+    #     series_list.append(cve_series)
+    # rem_brackets = pd.DataFrame(series_list).rename_axis(index="CVE_MET")
+
+    # # Get cumulative pop for density calculations
+    # rem_brackets_cum = rem_brackets.T.groupby(level=1).transform("cumsum").T
+
+    # r_brackets = np.array([3, 5, 9.3])
+
+    # dict_list = []
+    # for i, cve in enumerate(cve_list):
+    #     dict_list.append(
+    #         {"CVE_MET": cve, "brackets": r_brackets * np.sqrt(N_c[i, 3]) / 1000}
+    #     )
+    # rem_values = (
+    #     pd.DataFrame(dict_list)
+    #     .pipe(
+    #         lambda df: pd.concat(
+    #             [
+    #                 df,
+    #                 df[["brackets"]].apply(
+    #                     lambda x: x.values[0], axis=1, result_type="expand"
+    #                 ),
+    #             ],
+    #             axis=1,
+    #         )
+    #     )
+    #     .drop(columns="brackets")
+    #     .rename(columns={0: "r_3", 1: "r_5", 2: "r_9.3"})
+    #     .set_index("CVE_MET")
+    # )
+    # rem_values["rmax"] = [radial_f_core[cve]["r_disk"][-1] / 1000 for cve in cve_list]
+
+    # # Area of each annulus
+    # disk_area = rem_values**2 * np.pi
+    # annulus_area = disk_area.copy()
+    # annulus_area["r_5"] = disk_area.r_5 - disk_area.r_3
+    # annulus_area["r_9.3"] = disk_area["r_9.3"] - disk_area.r_5
+    # annulus_area["rmax"] = disk_area["rmax"] - disk_area["r_9.3"]
+    # annulus_area = annulus_area.rename(
+    #     columns={
+    #         "r_3": "N_inner",
+    #         "r_5": "N_mid",
+    #         "r_9.3": "N_distant",
+    #         "rmax": "N_outmost",
+    #     }
+    # )
+
+    # # Find overall density as all the people over all the area
+    # density_brackets = (
+    #     rem_brackets.sum()
+    #     .groupby(level=1)
+    #     .transform(lambda s: s / annulus_area.sum().values)
+    #     .to_frame("density")
+    # )
 
 
 def pop_change_map(mesh, agg, cve_met, ax, rem_vals=None, rmax=None, adjust_vmax=False):
@@ -539,7 +701,7 @@ def pop_change_map(mesh, agg, cve_met, ax, rem_vals=None, rmax=None, adjust_vmax
 
     # chull = mesh_met.union_all().convex_hull
     if rem_vals is not None:
-        for d in rem_vals:
+        for d in rem_vals.iloc[:3]:
             # center.buffer(d).boundary.intersection(chull).to_frame().plot(
             center.buffer(d * 1000).boundary.to_frame().plot(
                 ax=ax, facecolor="none", ls="--", edgecolor="black"
@@ -563,3 +725,374 @@ def pop_change_map(mesh, agg, cve_met, ax, rem_vals=None, rmax=None, adjust_vmax
     )
 
     ax.add_artist(ScaleBar(1))
+
+
+def plot_delta_density(
+    ax,
+    cve_list,
+    radial_f,
+    pop_ar,
+    cve_bold,
+    cve_names,
+    beta=0.5,
+    xlim=20,
+    scale=True,
+    agg=False,
+    avg=False,
+    rem_year=None,
+    fontsize=14,
+):
+    """Plot delta (2020 - 1990) radial density values against distance from the center.
+    Optionally scales radial density functions.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        Ax to place figure.
+    cve_list : List
+        List of zones (codes) to plot. A lines per zone.
+    radial_f : Dict
+        Dictionary of radial distributions functions, keys are zone codes.
+    pop_ar : np.Array
+        Array of population counts, of shape (# zones, # years)
+    cve_bold : Dict
+        Dictionay with codes and colors of example zones.
+    cve_names : List
+        List of zone names corresponding to codes in cve_list.
+    beta : float, optional
+        The scaling exponent, by default 0.5
+    xlim : int, optional
+        Limit of the x-axis, by default 20
+    scale : bool, optional
+        If true, scale radial density functions to a common remoteness scale, by
+        default True
+    agg : bool, optional
+        If True, include aggregated national curve, by default False
+    avg : bool, optional
+        If true, use average population density, else use point population density,
+        by default False
+    rem_year : int, optional
+        If provided, use this same year for all remoteness calculations, else use
+        each years remoteness values, by default None.
+    fontsize : int, optional
+        Font size for the figure, by default 14
+    """
+
+    years = (1990, 2000, 2010, 2020)
+
+    # Population of reference cities
+    pop_ref = 1e6
+
+    r_grid = np.linspace(0.0, xlim, 100)
+    area_agg = {y: np.zeros_like(r_grid) for y in years}
+    cumpop_agg = {y: np.zeros_like(r_grid) for y in years}
+    cve_bold_l = cve_bold.keys()
+
+    for i, cve in enumerate(cve_list):
+        # Scaling factos, L and one for densities
+        if scale and (rem_year is None):
+            l_factor = {
+                y: (pop_ref / pop_ar[i, j]) ** beta for j, y in enumerate(years)
+            }
+            s_factor = {
+                y: pop_ref / pop_ar[i, j] / l_factor[y] ** 2
+                for j, y in enumerate(years)
+            }
+        elif scale and (rem_year is not None):
+            j = years.index(rem_year)
+            # Use the same factor for all years
+            l_factor = {y: (pop_ref / pop_ar[i, j]) ** beta for y in years}
+            s_factor = {y: pop_ref / pop_ar[i, j] / l_factor[y] ** 2 for y in years}
+        else:
+            l_factor = {y: 1.0 for y in years}
+            s_factor = {y: 1.0 for y in years}
+
+        # Load ring/disk variables
+        # remove disk variables initial zero point with zero area disk
+        # Convert to km
+        r_ring = {y: l_factor[y] * radial_f[cve]["r_ring"] / 1e3 for y in years}
+        r_disk = {y: l_factor[y] * radial_f[cve]["r_disk"] / 1e3 for y in years}
+
+        # I need to find the minumum r as to not try to interpolate below this
+        # r_disk_min = {y: r_disk[y][1:].min() for y in years}
+        # Find first index in r_grid that so that r is larger than rmin
+        # r_disk_argmin = {y: np.searchsorted(r_grid, r_disk_min[y]) for y in years}
+
+        # We remove the first zeroth element of cumpop so interpolation is taken over
+        # non zero population
+        sigma = {
+            y: np.interp(r_grid, r_ring[y], s_factor[y] * radial_f[cve][f"sigma_{y}"])
+            * 1e6
+            for y in years
+        }
+        # Area in km of the disk at remoteness r_grid
+        # While it is possible to obtain analytic expression
+        # we must match the linear interpolation of cumpop, or pop would
+        # alwasy be larger than corresponding area in the interpolating region
+        # resulting in oscillations for small r
+        # area_disk = {y: np.pi * (r_grid / l_factor[y]) ** 2 for y in years}
+        # Make sure interpolation do not rach zero, minumum pop value is second cumpop
+        area_disk = {
+            y: np.interp(
+                r_grid,
+                r_disk[y][1:],
+                np.pi * (radial_f[cve]["r_disk"][1:] / 1000) ** 2,
+            )
+            for y in years
+        }
+        cumpop = {
+            y: np.interp(r_grid, r_disk[y][1:], radial_f[cve][f"cumpop_{y}"][1:])
+            for y in years
+        }
+        # We should replace area values before rmin with values at rmin
+        # for y in years:
+        #    area_disk[y][: r_disk_argmin[y]] = area_disk[y][r_disk_argmin[y]]
+        avg_sigma = {y: cumpop[y][1:] / area_disk[y][1:] for y in years}
+
+        delta_sigma = sigma[2020] - sigma[1990]
+        delta_avg_sigma = avg_sigma[2020] - avg_sigma[1990]
+
+        if avg:
+            y = delta_avg_sigma[:]
+            x = r_grid[1:]
+        else:
+            y = delta_sigma
+            x = r_grid
+
+        ax.plot(
+            x,
+            y,
+            color="grey" if cve not in cve_bold_l else cve_bold[cve],
+            alpha=0.3 if cve not in cve_bold_l else 1,
+            zorder=2 if cve not in cve_bold_l else 2.5,
+            label=None if cve not in cve_bold_l else cve_names[i].split("-")[0],
+            lw=1 if cve not in cve_bold else 2,
+        )
+
+        # Aggregated national density
+        for y in years:
+            cumpop_agg[y] += cumpop[y]
+            area_agg[y] += area_disk[y]
+
+    delta_r = r_grid[1] - r_grid[0]
+    area_ring = {y: area_agg[y][1:] - area_agg[y][:-1] for y in years}
+    pop_ring = {y: cumpop_agg[y][1:] - cumpop_agg[y][:-1] for y in years}
+    avg_sigma_agg = {y: cumpop_agg[y][1:] / area_agg[y][1:] for y in years}
+    if avg:
+        x_agg = r_grid[1:]
+        y_agg = avg_sigma_agg[2020] - avg_sigma_agg[1990]
+    else:
+        x_agg = r_grid[1:] - delta_r / 2
+        y_agg = pop_ring[2020] / area_ring[2020] - pop_ring[1990] / area_ring[1990]
+    if agg:
+        ax.plot(
+            x_agg,
+            y_agg,
+            color="black",
+            lw=3,
+            zorder=2.6,
+            label="National",
+        )
+
+    if scale:
+        ax.set_xlabel(r"$r$ (km)", fontsize=fontsize)
+    else:
+        ax.set_xlabel(r"$s$ (km)", fontsize=fontsize)
+
+    if avg:
+        ax.set_ylabel(r"$\Delta \bar{\sigma}(r)$ (people/km$^2$)", fontsize=fontsize)
+    else:
+        ax.set_ylabel(r"$\Delta \sigma$ (people/km$^2$)", fontsize=fontsize)
+
+    ax.tick_params(axis="x", labelsize=fontsize)
+    ax.tick_params(axis="y", labelsize=fontsize)
+
+    # ax.legend(loc="lower right", frameon=False, ncols=2)
+    ax.axhline(0, color="black", ls="--")
+    ax.set_xlim(0, xlim)
+
+
+def plot_density(
+    ax,
+    cve_list,
+    radial_f,
+    pop_ar,
+    beta=0.5,
+    xlim=20,
+    scale=True,
+    agg=False,
+    avg=False,
+    rem_year=None,
+    fontsize=14,
+):
+    """Plots national aggregated radial density functions for all years.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        Ax to place figure.
+    cve_list : List
+        List of zones (codes) to plot. A lines per zone.
+    radial_f : Dict
+        Dictionary of radial distributions functions, keys are zone codes.
+    pop_ar : np.Array
+        Array of population counts, of shape (# zones, # years)
+    beta : float, optional
+        The scaling exponent, by default 0.5
+    xlim : int, optional
+        Limit of the x-axis, by default 20
+    scale : bool, optional
+        If true, scale radial density functions to a common remoteness scale, by
+        default True
+    agg : bool, optional
+        If True, include aggregated national curve, by default False
+    avg : bool, optional
+        If true, use average population density, else use point population density,
+        by default False
+    rem_year : int, optional
+        If provided, use this same year for all remoteness calculations, else use
+        each years remoteness values, by default None.
+    fontsize : int, optional
+        Font size for the figure, by default 14
+    """
+
+    years = (1990, 2000, 2010, 2020)
+
+    # Population of reference cities
+    pop_ref = 1e6
+
+    r_grid = np.linspace(0.0, xlim, 100)
+    area_agg = {y: np.zeros_like(r_grid) for y in years}
+    cumpop_agg = {y: np.zeros_like(r_grid) for y in years}
+
+    for i, cve in enumerate(cve_list):
+        # Scaling factos, L and one for densities
+        if scale and (rem_year is None):
+            l_factor = {
+                y: (pop_ref / pop_ar[i, j]) ** beta for j, y in enumerate(years)
+            }
+            s_factor = {
+                y: pop_ref / pop_ar[i, j] / l_factor[y] ** 2
+                for j, y in enumerate(years)
+            }
+        elif scale and (rem_year is not None):
+            j = years.index(rem_year)
+            # Use the same factor for all years
+            l_factor = {y: (pop_ref / pop_ar[i, j]) ** beta for y in years}
+            s_factor = {y: pop_ref / pop_ar[i, j] / l_factor[y] ** 2 for y in years}
+        else:
+            l_factor = {y: 1.0 for y in years}
+            s_factor = {y: 1.0 for y in years}
+
+        # Load ring/disk variables
+        # remove disk variables initial zero point with zero area disk
+        # Convert to km
+        r_ring = {y: l_factor[y] * radial_f[cve]["r_ring"] / 1e3 for y in years}
+        r_disk = {y: l_factor[y] * radial_f[cve]["r_disk"] / 1e3 for y in years}
+
+        # We remove the first zeroth element of cumpop so interpolation is taken over
+        # non zero population
+        sigma = {
+            y: np.interp(r_grid, r_ring[y], s_factor[y] * radial_f[cve][f"sigma_{y}"])
+            * 1e6
+            for y in years
+        }
+        # Area in km of the disk at remoteness r_grid
+        # While it is possible to obtain analytic expression
+        # we must match the linear interpolation of cumpop, or pop would
+        # alwasy be larger than corresponding area in the interpolating region
+        # resulting in oscillations for small r
+        # area_disk = {y: np.pi * (r_grid / l_factor[y]) ** 2 for y in years}
+        # Make sure interpolation do not rach zero, minumum pop value is second cumpop
+        area_disk = {
+            y: np.interp(
+                r_grid,
+                r_disk[y][1:],
+                np.pi * (radial_f[cve]["r_disk"][1:] / 1000) ** 2,
+            )
+            for y in years
+        }
+        cumpop = {
+            y: np.interp(r_grid, r_disk[y][1:], radial_f[cve][f"cumpop_{y}"][1:])
+            for y in years
+        }
+        # We should replace area values before rmin with values at rmin
+        # for y in years:
+        #    area_disk[y][: r_disk_argmin[y]] = area_disk[y][r_disk_argmin[y]]
+        avg_sigma = {y: cumpop[y][1:] / area_disk[y][1:] for y in years}
+
+        delta_sigma = sigma[2020] - sigma[1990]
+        delta_avg_sigma = avg_sigma[2020] - avg_sigma[1990]
+
+        if avg:
+            y = delta_avg_sigma[:]
+            # x = r_grid[1:]
+        else:
+            y = delta_sigma
+            # x = r_grid
+
+        # ax.plot(
+        #     x,
+        #     y,
+        #     color="grey" if cve not in cve_bold_l else cve_bold[cve],
+        #     alpha=0.3 if cve not in cve_bold_l else 1,
+        #     zorder=2 if cve not in cve_bold_l else 2.5,
+        #     label=None if cve not in cve_bold_l else cve_names[i],
+        # )
+
+        # Aggregated national density
+        for y in years:
+            cumpop_agg[y] += cumpop[y]
+            area_agg[y] += area_disk[y]
+
+    delta_r = r_grid[1] - r_grid[0]
+    area_ring = {y: area_agg[y][1:] - area_agg[y][:-1] for y in years}
+    pop_ring = {y: cumpop_agg[y][1:] - cumpop_agg[y][:-1] for y in years}
+    avg_sigma_agg = {y: cumpop_agg[y][1:] / area_agg[y][1:] for y in years}
+    sigma_agg = {y: pop_ring[y] / area_ring[y] for y in years}
+    # if avg:
+    #     x_agg = r_grid[1:]
+    #     y_agg = avg_sigma_agg[2020] - avg_sigma_agg[1990]
+    # else:
+    #     x_agg = r_grid[1:] - delta_r / 2
+    #     y_agg = sigma_agg[2020] - sigma_agg[1990]
+    # if agg:
+    #     ax.plot(
+    #         x_agg,
+    #         y_agg,
+    #         color="black",
+    #         lw=2,
+    #         zorder=2.5,
+    #         label="National",
+    #     )
+    if avg:
+        x_agg = r_grid[1:]
+        y_agg = avg_sigma_agg
+    else:
+        x_agg = r_grid[1:] - delta_r / 2
+        y_agg = sigma_agg
+    cdict = {
+        1990: "#e8d5d1",
+        2000: "#bf8fa1",
+        2010: "#7c5479",
+        2020: "#2B213A",
+    }
+    if agg:
+        for y in years:
+            ax.plot(x_agg, y_agg[y], color=cdict[y], lw=2, label=y)
+
+    if scale:
+        ax.set_xlabel(r"$r$ (km)", fontsize=fontsize)
+    else:
+        ax.set_xlabel(r"$s$ (km)", fontsize=fontsize)
+
+    if avg:
+        ax.set_ylabel(r"$\bar{\sigma}$ (people/km$^2$)", fontsize=fontsize)
+    else:
+        ax.set_ylabel(r"$\sigma$ (people/km$^2$)", fontsize=fontsize)
+
+    ax.tick_params(axis="x", labelsize=fontsize)
+    ax.tick_params(axis="y", labelsize=fontsize)
+
+    ax.legend(loc=None, frameon=False)
+    ax.set_xlim(0, xlim)

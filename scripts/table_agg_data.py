@@ -110,7 +110,6 @@ with open("outputs/zones_centers.tex", "w", encoding="utf-8") as f:
         float_format="%.6f",
         longtable=True,
         caption=(
-            "Location of urban centers for Mexican metropolises. "
-            "MA: Metropolitan Area. MM: Metropolitan Municipality."
+            "MA: Metropolitan Area. MM: Metropolitan Municipality. Locations are based on historical documentation for each city (e.g., government websites, books, etc."
         ),
     )
