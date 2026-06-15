@@ -541,10 +541,10 @@ def plot_L_P_outliers(ax, slopes_df, models_df, x1, x2, y1, y2):
             slopes_df_filtered.query("dt == @dt").N2_N1,
             slopes_df_filtered.query("dt == @dt").L,
             color="grey",
-            label=rf"$\Delta t = {dt}$",
+            # label=rf"$\Delta t = {dt}$",
             alpha=0.6,
             marker=marker,
-            s=10,
+            # s=10,
         )
 
     for dt, marker in markers_dt.items():
@@ -552,14 +552,14 @@ def plot_L_P_outliers(ax, slopes_df, models_df, x1, x2, y1, y2):
             slopes_df_filtered.loc[outliers].query("dt == @dt").N2_N1,
             slopes_df_filtered.loc[outliers].query("dt == @dt").L,
             color="red",
-            label=rf"$\Delta t = {dt}$",
-            alpha=0.6,
+            # label=rf"$\Delta t = {dt}$",
+            alpha=1,
             marker=marker,
-            s=10,
+            # s=10,
         )
 
-    ax.set_xlabel(r"$P(t_j)/P(t_i)$")
-    ax.set_ylabel(r"$\Phi_{ij}$")
+    ax.set_xlabel(r"Population growth $P(t_j)/P(t_i)$ (log scale)", fontsize=16)
+    ax.set_ylabel(r"Urban expansion factor $\Phi_{ij}$ (log scale)", fontsize=16)
     ax.set_xscale("log")
     ax.set_yscale("log")
 
@@ -575,14 +575,14 @@ def plot_L_P_outliers(ax, slopes_df, models_df, x1, x2, y1, y2):
     def model3(x):
         return x**beta * np.exp(alpha * 30)
 
-    ax.axline((1, model(1)), (1.5, model(1.5)), color="grey", ls="-", lw=1)
-    ax.axline((1, model2(1)), (1.5, model2(1.5)), color="grey", ls="-", lw=1)
-    ax.axline((1, model3(1)), (1.5, model3(1.5)), color="grey", ls="-", lw=1)
+    ax.axline((1, model(1)), (1.5, model(1.5)), color="grey", ls="-", lw=1, zorder=-1)
+    ax.axline((1, model2(1)), (1.5, model2(1.5)), color="grey", ls="-", lw=1, zorder=-1)
+    ax.axline((1, model3(1)), (1.5, model3(1.5)), color="grey", ls="-", lw=1, zorder=-1)
 
-    ax.set_yticks([1, 2, 3, 4], ["1", "2", "3", "4"], minor=True)
-    ax.set_yticks([1, 2, 3, 4], ["1", "2", "3", "4"], minor=False)
+    ax.set_yticks([1, 2, 3, 4], ["1", "2", "3", "4"], minor=True, fontsize=16)
+    ax.set_yticks([1, 2, 3, 4], ["1", "2", "3", "4"], minor=False, fontsize=16)
 
-    ax.set_xticks([1, 10], ["1", "10"], minor=False)
+    ax.set_xticks([1, 10], ["1", "10"], minor=False, fontsize=16)
 
     rect = patches.Rectangle(
         (x1, y1),
@@ -594,6 +594,22 @@ def plot_L_P_outliers(ax, slopes_df, models_df, x1, x2, y1, y2):
         facecolor="none",
     )
     ax.add_patch(rect)
+
+    h, l = ax.get_legend_handles_labels()
+    red_patch = mpatches.Patch(color="red", label="The red data")
+    grey_patch = mpatches.Patch(color="grey", label="The grey data")
+    h.append(red_patch)
+    # h.append(grey_patch)
+    l.append("Outliers")
+    ax.legend(
+        loc="upper left",
+        frameon=False,
+        fontsize=16,
+        #     bbox_to_anchor=(0.0, 1.0),
+        #     ncol=4,
+        handles=h,
+        labels=l,
+    )
 
 
 def plot_L_P_models(
@@ -613,25 +629,28 @@ def plot_L_P_models(
             marker=marker,
         )
 
-    ax.set_xlabel(r"Population growth $P(t_j)/P(t_i)$ (log scale)", fontsize=12)
-    ax.set_ylabel(r"Urban expansion factor $\Phi_{ij}$ (log scale)", fontsize=12)
+    ax.set_xlabel(r"Population growth $P(t_j)/P(t_i)$ (log scale)", fontsize=16)
+    ax.set_ylabel(
+        r"Urban expansion factor $\mathit{\Phi}_{ij}$ (log scale)", fontsize=16
+    )
     ax.set_xscale("log")
     ax.set_yscale("log")
 
-    h, l = ax.get_legend_handles_labels()
-    red_patch = mpatches.Patch(color="red", label="The red data")
-    if add_red_patch:
-        h.append(red_patch)
-        l.append("Outliers")
-    ax.legend(
-        loc="lower left",
-        frameon=False,
-        fontsize=12,
-        bbox_to_anchor=(0.0, 1.0),
-        ncol=4,
-        handles=h,
-        labels=l,
-    )
+    # h, l = ax.get_legend_handles_labels()
+    # red_patch = mpatches.Patch(color="red", label="The red data")
+    # if add_red_patch:
+    #     h.append(red_patch)
+    #     l.append("Outliers")
+    # ax.legend(
+    #     loc="lower left",
+    #     frameon=False,
+    #     fontsize=16,
+    #     bbox_to_anchor=(0.0, 1.0),
+    #     ncol=4,
+    #     handles=h,
+    #     labels=l,
+    # )
+    ax.legend(fontsize=16, frameon=False, loc="upper left")
 
     alpha = models_df.loc["shared_slope_DT_intercept"].itcp_Dt
     beta = models_df.loc["shared_slope_DT_intercept"].beta
@@ -652,10 +671,10 @@ def plot_L_P_models(
     if boundary:
         ax.plot(xgrid, np.sqrt(xgrid), ls="--", color="k")
         ax.text(
-            3,
+            2.8,
             np.sqrt(3) + 0.18,
-            r"$\Phi_{ij}=\sqrt{P(t_j)/P(t_i)}$",
-            fontsize=10,
+            r"$\mathit{\Phi}_{ij}=\sqrt{P(t_j)/P(t_i)}$",
+            fontsize=14,
             va="top",
             ha="center",
             rotation=np.arctan(0.5) / np.pi * 180 + 2,
@@ -663,14 +682,14 @@ def plot_L_P_models(
     ax.set_xlim(x1, x2)
 
     ax.set_yticks(
-        [1, 1.5, 2, 2.5], ["1.0", "1.5", "2.0", "2.5"], minor=True, fontsize=12
+        [1, 1.5, 2, 2.5], ["1.0", "1.5", "2.0", "2.5"], minor=True, fontsize=16
     )
     ax.set_yticks(
-        [1, 1.5, 2, 2.5], ["1.0", "1.5", "2.0", "2.5"], minor=False, fontsize=12
+        [1, 1.5, 2, 2.5], ["1.0", "1.5", "2.0", "2.5"], minor=False, fontsize=16
     )
 
-    ax.set_xticks([1, 2, 3], ["1.0", "2.0", "3.0"], minor=True, fontsize=12)
-    ax.set_xticks([1, 2, 3], ["1.0", "2.0", "3.0"], minor=False, fontsize=12)
+    ax.set_xticks([1, 2, 3], ["1.0", "2.0", "3.0"], minor=True, fontsize=16)
+    ax.set_xticks([1, 2, 3], ["1.0", "2.0", "3.0"], minor=False, fontsize=16)
 
 
 def fit_model(N2_N1, L, fit_intercept=True, add_dummies=False, dummies=None):

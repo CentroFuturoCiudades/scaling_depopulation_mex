@@ -55,12 +55,12 @@ print(
     f"Alternative model is rejected with an F-statistic of {anova_table.loc[1, 'F']:0.2f} and a p-value of {anova_table.loc[1, 'Pr(>F)']:0.2e}"
 )
 
-fig, ax = plt.subplots(1, 1, layout="constrained", figsize=(7, 7))
+fig, ax = plt.subplots(1, 2, layout="constrained", figsize=(14, 7))
 
-plot_L_P_models(ax, slopes_df, models_df)
+plot_L_P_models(ax[0], slopes_df, models_df)
 
-x1, x2 = ax.get_xlim()
-y1, y2 = ax.get_ylim()
+x1, x2 = ax[0].get_xlim()
+y1, y2 = ax[0].get_ylim()
 
 ###### INSET ######
 
@@ -68,7 +68,7 @@ slopes_df_filtered = slopes_df.assign(dt=lambda df: df.t2 - df.t1)  # .drop(outl
 
 markers = {10: "o", 20: "^", 30: "s"}
 
-ax = ax.inset_axes((0.69, 0.08, 0.3, 0.3))
-plot_L_P_outliers(ax, slopes_df, models_df, x1, x2, y1, y2)
+# ax = ax.inset_axes((0.69, 0.08, 0.3, 0.3))
+plot_L_P_outliers(ax[1], slopes_df, models_df, x1, x2, y1, y2)
 
 plt.savefig("figures/models.pdf")
