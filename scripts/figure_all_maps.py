@@ -5,6 +5,7 @@ from pathlib import Path
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.offsetbox import AnchoredText
 
 from depopulation.radial_f import load_radial_f, pop_change_map
 
@@ -28,6 +29,17 @@ for i, cve in enumerate(cve_list):
         rem_vals=rem_brackets.loc[cve].drop("CVE_NAME"),
         rmax=radial_f[cve]["r_disk"][-1] / 1000,
     )
+    center = agg_all_df.to_crs("4326").get_coordinates().loc[cve]
+    longitude = center.x
+    latitude = center.y
+    anchored_text = AnchoredText(
+        f"City centre coordinates: {latitude:0.6f}, {longitude:0.6f}",
+        loc="upper left",
+        prop=dict(size=8),
+        frameon=False,
+    )
+    ax.add_artist(anchored_text)
+    # ax.text(f"City center coordinates: ")
     # ax.set_title(f"{cve} {cve_names[i]}", loc="left", pad=-20)
     plt.tight_layout()
     plt.savefig(opath / f"{cve}.pdf")
